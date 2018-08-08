@@ -1,4 +1,6 @@
-function csvToArray(text){
+const render = document.getElementById('app');
+
+const csvToArray = (text) => {
 
   const lines=text.split("\n");
 
@@ -20,7 +22,19 @@ function csvToArray(text){
   }
   console.log(result)
   return result; //JavaScript object
-  // return JSON.stringify(result);
+}
+
+const getTotalAmount = (result) => {
+  let total = 0;
+
+  for(let i = 0; i < result.length-1; i++) {
+    const salaryObj = result[i];
+    const salaryValue = +salaryObj['AMOUNT'];
+
+    total += salaryValue;
+  }
+
+  return(total)
 }
 
 function readFile() {
@@ -124,4 +138,7 @@ function readFile() {
 `);
 }
 
-csvToArray(readFile());
+const result = csvToArray(readFile());
+const total = getTotalAmount(result);
+render.innerHTML = '<h1>KEEP CALM. WORK IN PROGRESS...</h1>'
+                  + '<h2>Total: ' + total + '</h2>';
