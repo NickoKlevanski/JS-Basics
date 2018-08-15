@@ -2,18 +2,18 @@ const render = document.getElementById('app');
 
 const csvToArray = (text) => {
 
-  const lines=text.split("\n");
+  const lines = text.split("\n");
 
   const result = [];
 
-  const headers=lines[0].split(",");
+  const headers = lines[0].split(",");
 
-  for(let i=1;i<lines.length;i++){
+  for(let i = 1; i < lines.length; i++){
 
 	  const obj = {};
-	  const currentline=lines[i].split(",");
+	  const currentline = lines[i].split(",");
 
-	  for(let j=0;j<headers.length;j++){
+	  for(let j = 0; j < headers.length; j++){
 		  obj[headers[j]] = currentline[j];
 	  }
 
@@ -24,18 +24,36 @@ const csvToArray = (text) => {
   return result; //JavaScript object
 }
 
-const getTotalAmount = (result) => {
-  let total = 0;
+// const getTotalAmount = (result) => {
+//   let total = 0;
 
-  for(let i = 0; i < result.length-1; i++) {
-    const salaryObj = result[i];
-    const salaryValue = +salaryObj['AMOUNT'];
+//   for(let i = 0; i < result.length - 1; i++) {
+//     const salaryObj = result[i];
+//     const salaryValue = +salaryObj['AMOUNT'];
 
-    total += salaryValue;
-  }
+//     total += salaryValue;
+//   }
 
-  return(total)
+//   return(total)
+// }
+
+const splitRows = fileBody => fileBody.split('\n');
+
+const Payment = (dataRow, index) => {
+  const parts = dataRow.split(',');
+  return {
+    month: parts[0],
+    department: parts[1],
+    amount: parseFloat(parts[3]),
+    number: index,
+  };
 }
+
+const isValidAmount = payment => !isNaN(payment.amount);
+
+const parseFile = fileBody => splitRows(fileBody)
+  .map(Payment)
+  .filter(isValidAmount);
 
 function readFile() {
   return (
@@ -139,6 +157,6 @@ function readFile() {
 }
 
 const result = csvToArray(readFile());
-const total = getTotalAmount(result);
-render.innerHTML = '<h1>KEEP CALM. WORK IN PROGRESS...</h1>'
-                  + '<h2>Total: ' + total + '</h2>';
+// const total = getTotalAmount(result);
+// render.innerHTML = '<h1>KEEP CALM. WORK IN PROGRESS...</h1>'
+//                   + '<h2>Total: ' + total + '</h2>';
